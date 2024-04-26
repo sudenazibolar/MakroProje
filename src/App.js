@@ -11,6 +11,8 @@ import C from './screens/3';
 import D from './screens/4';
 import QrOkYiyecekButon from './screens/qrOkYiyecekButon';
 
+
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
