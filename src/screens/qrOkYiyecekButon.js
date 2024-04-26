@@ -113,7 +113,6 @@ const QrOkYiyecekButon = () => {
                  <ScrollView style={{ marginTop: 10 , }}>
              <View style={{ borderBottomWidth: 1, borderBottomColor: '#C1D0DA', marginHorizontal: 10, marginTop: 10, flexDirection: 'column' }}>
                  <View style={{ flexDirection: 'row' }}>
-
                      <Image source={require('../icons/kahve1.png')} style={{ marginHorizontal: 10, width: 80, height: 80, }} />
 
                      <View style={{ flexDirection: 'column' }}>
