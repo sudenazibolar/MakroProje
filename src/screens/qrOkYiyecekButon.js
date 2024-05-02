@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useState,useEffect } from 'react';
+import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, ScrollView,KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import App from "./slider.js";
 import urunler from './urunler.js';
-
-
-
 
 const MenuItem = ({ text, onPress, highlighted }) => {
     return (
@@ -95,11 +92,11 @@ const ProductBox = ({ imageSource, title, kategori, price, description, kcal, pr
 };
 
 const QrOkYiyecekButon = () => {
-    const [highlightedIndexMenu, setHighlightedIndexMenu] = useState(null);
-    const [highlightedIndexMenuItem, setHighlightedIndexMenuItem] = useState(null);
-
-    const [highlightedIndexMenu1, setHighlightedIndexMenu1] = useState(null);
-    const [highlightedIndexMenuItem1, setHighlightedIndexMenuItem1] = useState(null);
+    const [highlightedIndexMenu, setHighlightedIndexMenu] = useState(0);
+    const [highlightedIndexMenuItem, setHighlightedIndexMenuItem] = useState(0);
+  
+    const [highlightedIndexMenu1, setHighlightedIndexMenu1] = useState(0);
+    const [highlightedIndexMenuItem1, setHighlightedIndexMenuItem1] = useState(1);
 
     const handleMenuPress = (index) => {
         setHighlightedIndexMenu(index);
@@ -125,6 +122,25 @@ const QrOkYiyecekButon = () => {
 
     const handleMenuItemPress1 = (index) => {
         setHighlightedIndexMenuItem1(index);
+    };
+    const [open, setOpen] = useState(false);
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (event) => {
+            setKeyboardHeight(event.endCoordinates.height);
+        });
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardHeight(0);
+        });
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
+    const toggleMenu = () => {
+        setOpen(!open);
     };
 
     return (
@@ -457,14 +473,6 @@ const QrOkYiyecekButon = () => {
                         </View>
                     )}
 
-                    <View style={{ position: 'absolute', top: 350, left: 0, right: 5, zIndex: 1, alignItems: 'flex-end' }}>
-                        <TouchableOpacity>
-                            <View style={{ backgroundColor: '#F4690B', height: 80, width: 80, borderRadius: 40, alignItems:'center',justifyContent:'center'}} >
-                            <Image source={require('../icons/zil.png')} style={{ }} />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-
                 </View>
 
             )
@@ -590,7 +598,28 @@ const QrOkYiyecekButon = () => {
                         </ScrollView>
                     </View>
                 )
+
             }
+             <View style={{ position: 'absolute', bottom: 16, right: 16 }}>
+                <TouchableOpacity onPress={toggleMenu} style={{ width: 70, height: 70, borderRadius: 35, backgroundColor: '#f4690b', alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={open ? require('../icons/sepet.png') : require('../icons/zil.png')} style={{ height: 36, resizeMode: 'contain' }} />
+                </TouchableOpacity>
+                {open && (
+                    <View style={{ position: 'absolute', bottom: 70, right: 8 }}>
+                        <TouchableOpacity onPress={toggleMenu} style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#f4a218', alignItems: 'center', justifyContent: 'center', zIndex: 999, marginBottom: 10 }}>
+                            <Image source={require('../icons/zil1.png')} style={{ height: 30, resizeMode: 'contain' }} />
+
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#f4a218', alignItems: 'center', justifyContent: 'center', zIndex: 999, marginBottom: 10 }}>
+                            <Image source={require('../icons/sepet3.png')} style={{ height: 30, resizeMode: 'contain' }} />
+
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#f4a218', alignItems: 'center', justifyContent: 'center', zIndex: 999, marginBottom: 10 }}>
+                            <Image source={require('../icons/sepet4.png')} style={{ height: 30, resizeMode: 'contain' }} />
+                        </TouchableOpacity>
+                    </View>
+                )}
+            </View>
         </View >
     );
 };
